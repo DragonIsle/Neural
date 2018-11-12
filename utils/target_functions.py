@@ -1,5 +1,6 @@
+from math import log
+
 import numpy as np
-from math import log1p
 
 
 def j_quadratic(y_hat, y):
@@ -25,7 +26,7 @@ def j_quadratic_derivative(y_hat, y):
 
 
 def j_cross_entropy(y_hat, y):
-    return -1 * np.mean(y * log1p(y_hat) + (1 - y) * log1p(1 - y_hat))
+    return -1 * np.mean(y * np.vectorize(log)(y_hat) + (1 - y) * np.vectorize(log)(1 - y_hat))
 
 
 def j_cross_entropy_derivative(y_hat, y):

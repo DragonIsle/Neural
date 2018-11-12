@@ -1,4 +1,5 @@
 import numpy as np
+
 from utils.visualization_utils import print_graph
 
 
@@ -30,7 +31,7 @@ class Network:
         :return: Матрица выходных активаций, (n, N)
         """
 
-        next_layer_input = np.append(np.ones((len(x), 1), dtype=int), x, axis=1)
+        next_layer_input = np.append(np.ones((x.shape[0], 1), dtype=int), x, axis=1)
         for layer in self.layers:
             activations = layer.process_input(next_layer_input)
             next_layer_input = np.append(np.ones((len(activations), 1), dtype=int), activations, axis=1)
@@ -99,6 +100,7 @@ class Network:
             if i < last_layer_id:
                 layer_error = reversed_layers[i + 1].get_error(layer_error, layer_weights)
                 layer_weights = reversed_layers[i + 1].get_weights()
+        return layer_error
 
     @staticmethod
     def get_batches(x, batch_size):

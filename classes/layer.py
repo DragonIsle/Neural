@@ -1,6 +1,8 @@
-import numpy as np
-from classes.neuron import Neuron
 import random
+
+import numpy as np
+
+from classes.neuron import Neuron
 
 
 class Layer:
@@ -40,7 +42,7 @@ class Layer:
         for i, v in enumerate(self.neurons):
             v.update_mini_batch(x, errors[:, [i]], learning_rate)
 
-    def get_error(self, next_layer_errors, weights):
+    def get_error(self, next_layer_errors, next_layer_weights):
         """
         Считает ошибку на данном слое сети
         next_layer_errors - ndarray размера (n, n_{l+1})
@@ -51,13 +53,18 @@ class Layer:
         sums = self.intermediate_sums
         sum_primes = np.array([v.derivative(sums[:, i])
                                for i, v in enumerate(self.neurons)])
-        return (weights[:, 1:].T.dot(next_layer_errors.T) * sum_primes).T
+        return (next_layer_weights[:, 1:].T.dot(next_layer_errors.T) * sum_primes).T
 
     def get_weights(self):
         """
         :return: Матрица весов для всего слоя, (n_l, n_{l-1})
         """
         return np.array([v.w.flatten() for i, v in enumerate(self.neurons)])
+
+    @staticmethod
+    def init_with_weights(weights, act_func, act_func_der):
+        return Layer(
+            [Neuron(weights_row.reshape(weights.shape[1], 1), act_func, act_func_der) for weights_row in weights])
 
     @staticmethod
     def layer_with_random_weights(neuron_count, weights_len, act_func, act_func_der):
