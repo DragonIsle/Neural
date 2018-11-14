@@ -4,7 +4,7 @@ import math
 
 def sigmoid(x):
     """сигмоидальная функция, работает и с числами, и с векторами (поэлементно)"""
-    return 1 / (1 + np.exp(round(-x, 3)))
+    return 1 / (1 + np.exp(-x))
 
 
 def sigmoid_prime(x):

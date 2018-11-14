@@ -33,13 +33,19 @@ def run_conv_net():
     exs, ans = read_all_char_examples_with_answers('resources/digits', False, 64, 48)
     exs = abs(1 - exs / 255)
 
-    print(network.sgd(exs, ans, 110, 50, 1, 20, 1e-9, visualize=False))
+    print(network.sgd(exs, ans, 110, 1, 0.02, 10, 1e-9, visualize=False))
+
+    # for i, l in enumerate(network.fully_connected_net.layers):
+    #     save_matrix_to_file('resources/weights_conv' + str(i), l.get_weights())
+    #
+    # for i, l in enumerate(network.layers):
+    #     save_matrix_to_file('resources/weights_kernels' + str(i), map(lambda x: x.flatten(), l.get_weights()))
 
     for i, l in enumerate(network.fully_connected_net.layers):
-        save_matrix_to_file('resources/weights_conv' + str(i), l.get_weights())
+        save_matrix_to_file('resources/weights_conv_t' + str(i), l.get_weights())
 
     for i, l in enumerate(network.layers):
-        save_matrix_to_file('resources/weights_kernels' + str(i), map(lambda x: x.flatten(), l.get_weights()))
+        save_matrix_to_file('resources/weights_kernels_t' + str(i), map(lambda x: x.flatten(), l.get_weights()))
 
     print(network.process_input(exs, ans))
 
