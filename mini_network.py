@@ -33,7 +33,7 @@ def run_conv_net():
     exs, ans = read_all_char_examples_with_answers('resources/digits', False, 64, 48)
     exs = abs(1 - exs / 255)
 
-    print(network.sgd(exs, ans, 110, 1, 0.02, 10, 1e-9, visualize=False))
+    print(network.sgd(exs, ans, 110, 1, 0.1, 30, 1e-9, visualize=False))
 
     # for i, l in enumerate(network.fully_connected_net.layers):
     #     save_matrix_to_file('resources/weights_conv' + str(i), l.get_weights())
@@ -72,6 +72,9 @@ def run_simple_net():
 
 
 if __name__ == '__main__':
+    import time
+    t = time.time()
     run_conv_net()
     # run_simple_net()
+    print(time.time() - t)
     sys.exit(0)

@@ -32,7 +32,7 @@ def init_random_weights_in_file(file_name, neuron_count, neuron_weights_count, r
 def save_matrix_to_file(file_name, matrix, mode='w'):
     f = open(file_name, mode)
     for row in matrix:
-        f.write(np.array2string(row, max_line_width=10000, formatter={'float_kind': lambda x: "%.6f" % x})[1:-1] + '\n')
+        f.write(np.array2string(row, max_line_width=100000, formatter={'float_kind': lambda x: "%.8f" % x})[1:-1] + '\n')
     f.write('\n')
     f.close()
 
