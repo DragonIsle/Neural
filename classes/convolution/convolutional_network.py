@@ -22,7 +22,7 @@ class ConvolutionNetwork:
         target_func_results = []
         while (not errors) and (step < step_limit):
             batch_ids_arr = self.fully_connected_net.get_batches(np.arange(len(y)), batch_size)
-            init_target_func = self.process_input(x, y)
+            # init_target_func = self.process_input(x, y)
             for batch_ids in batch_ids_arr:
                 x_b = x[batch_ids]
                 y_b = y[batch_ids]
@@ -31,8 +31,8 @@ class ConvolutionNetwork:
                 if visualize:
                     steps.append(step)
                     target_func_results.append(self.process_input(x, y))
-            res_target_func = self.process_input(x, y)
-            errors += int(abs(init_target_func - res_target_func) < eps)
+            # res_target_func = self.process_input(x, y)
+            # errors += int(abs(init_target_func - res_target_func) < eps)
         if visualize:
             print_graph(steps, target_func_results)
         return errors

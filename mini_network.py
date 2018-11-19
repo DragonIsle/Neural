@@ -33,7 +33,7 @@ def run_conv_net():
     exs, ans = read_all_char_examples_with_answers('resources/digits', False, 64, 48)
     exs = abs(1 - exs / 255)
 
-    print(network.sgd(exs, ans, 110, 1, 0.1, 30, 1e-9, visualize=False))
+    print(network.sgd(exs, ans, 110, 20, 1, 30, 1e-9, visualize=False))
 
     # for i, l in enumerate(network.fully_connected_net.layers):
     #     save_matrix_to_file('resources/weights_conv' + str(i), l.get_weights())
@@ -48,6 +48,28 @@ def run_conv_net():
         save_matrix_to_file('resources/weights_kernels_t' + str(i), map(lambda x: x.flatten(), l.get_weights()))
 
     print(network.process_input(exs, ans))
+
+
+def run_on_test_data():
+    conv_layer1 = ConvolutionLayer.init_with_weights_from_file('resources/weights_kernels0', 5, 2)
+    conv_layer2 = ConvolutionLayer.init_with_weights_from_file('resources/weights_kernels1', 5, 2)
+    conv_layer3 = ConvolutionLayer.init_with_weights_from_file('resources/weights_kernels2', 3, 2)
+    network_conv = Network(
+        [Layer.init_with_weights(read_matrix_from_file('resources/weights_conv' + str(i)), sigmoid, sigmoid_prime)
+         for i in range(2)], j_cross_entropy, j_cross_entropy_derivative)
+    network = ConvolutionNetwork([conv_layer1, conv_layer2, conv_layer3], network_conv)
+    test_data = read_char_images_from_dir('resources/test', False, 64, 48)
+    test_answers = np.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                             [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                             [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+                             [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+                             [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+                             [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                             [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]])
+    print(network.process_input(test_data, test_answers))
 
 
 def run_simple_net():
@@ -76,5 +98,6 @@ if __name__ == '__main__':
     t = time.time()
     run_conv_net()
     # run_simple_net()
+    # run_on_test_data()
     print(time.time() - t)
     sys.exit(0)

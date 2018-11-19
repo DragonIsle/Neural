@@ -1,5 +1,4 @@
-from math import ceil
-
+import skimage.measure as measure
 import numpy as np
 import scipy.signal as signal
 
@@ -36,7 +35,7 @@ class ConvolutionNeuron:
         """
         res_map = signal.convolve2d(sign_map, self.kernel, 'valid')
         self.convolution_res.append(res_map)
-        return self.subsample_one_map(res_map)
+        return measure.block_reduce(res_map, (2, 2), np.max)
 
     def update_mini_batch(self, neuron_input, error, learning_rate):
         grad = np.zeros_like(self.kernel)
@@ -52,16 +51,6 @@ class ConvolutionNeuron:
             for x in range(error.shape[1]):
                 grad += neuron_input[y:y + kernel_y, x:x + kernel_x] * error[y, x]
         return grad / (error.shape[0] * error.shape[1])
-
-    def subsample_one_map(self, sign_map):
-        ssize = self.subsample_size
-        output = np.zeros((int(ceil(sign_map.shape[0] / ssize)),
-                           int(ceil(sign_map.shape[1] / ssize))))
-        for y in range(output.shape[0]):
-            for x in range(output.shape[1]):
-                output[y, x] = np.amax(sign_map[y * ssize:y * ssize + ssize,
-                                       x * ssize:x * ssize + ssize])
-        return output
 
     def create_err_map(self, next_layer_err, next_layer_weights, ex_id):
         err_on_subs = self.create_err_map_for_subs(next_layer_err, next_layer_weights)
