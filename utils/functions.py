@@ -24,7 +24,7 @@ def relu(x):
 
 
 def softplus(x):
-    return math.log1p(1 + np.exp(round(x, 3)))
+    return np.vectorize(math.log1p)(1 + np.exp(round(x, 3)))
 
 
 def linear(x):
@@ -41,3 +41,15 @@ def quadratic(x):
 
 def quadratic_der(x):
     return 2 * x
+
+
+def softmax(x):
+    """Только для векторов"""
+    e_x = np.exp(x)
+    return e_x / np.sum(e_x)
+
+
+def softmax_prime(x):
+    """Только для векторов"""
+    return softmax(x) * (1 - softmax(x))
+

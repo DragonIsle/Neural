@@ -17,4 +17,7 @@ def print_graph(x, y):
     fig = plt.figure()
 
     plt.plot(x, y)
+    plt.ylabel("Целевая функция")
+    plt.xlabel("Число шагов алгоритма")
+    plt.ylim(0, 0.03)
     plt.show()

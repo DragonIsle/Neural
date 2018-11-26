@@ -31,3 +31,12 @@ def j_cross_entropy(y_hat, y):
 
 def j_cross_entropy_derivative(y_hat, y):
     return (y_hat - y) / (y_hat * (1 - y_hat) * len(y) * y.shape[1])
+
+
+def target_func_for_tests(y_hat, y):
+    total_correct_answers = 0
+    max_ids = np.argmax(y_hat, axis=1)
+    for i, ident in enumerate(max_ids):
+        total_correct_answers += y[i][ident]
+    return total_correct_answers
+

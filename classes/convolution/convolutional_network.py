@@ -13,6 +13,7 @@ class ConvolutionNetwork:
             next_layer_input = layer.process_sign_maps(next_layer_input)
 
         # next_layer_input = np.maximum(next_layer_input, 0)
+        # next_layer_input = next_layer_input / np.max(next_layer_input)
         return self.fully_connected_net.process_input(self.transform_maps(next_layer_input), y)
 
     def sgd(self, x, y, batch_size, learning_rate, learning_rate_conn, step_limit, eps=1e-6, visualize=False):
@@ -31,6 +32,8 @@ class ConvolutionNetwork:
                 if visualize:
                     steps.append(step)
                     target_func_results.append(self.process_input(x, y))
+                if step == step_limit:
+                    break
             # res_target_func = self.process_input(x, y)
             # errors += int(abs(init_target_func - res_target_func) < eps)
         if visualize:

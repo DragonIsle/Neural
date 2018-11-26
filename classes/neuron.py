@@ -46,7 +46,7 @@ class Neuron:
         Возвращает вектор размера (n, 1), содержащий в i-й строке
         значение активационной функции для i-го примера.
         """
-        return np.vectorize(self.activation_function)(summatory_activation)
+        return self.activation_function(summatory_activation)
 
     def derivative(self, summatory_activation):
         """
@@ -57,7 +57,7 @@ class Neuron:
         Возвращает вектор размера (n, 1), содержащий в i-й строке
         значение производной активационной функции для i-го примера.
         """
-        return np.vectorize(self.activation_function_derivative)(summatory_activation)
+        return self.activation_function_derivative(summatory_activation)
 
     def update_mini_batch(self, x, errors, learning_rate):
         """

@@ -1,6 +1,7 @@
 import numpy as np
 
 from utils.visualization_utils import print_graph
+from utils.functions import softmax, softmax_prime
 
 
 class Network:
@@ -32,10 +33,15 @@ class Network:
         """
 
         next_layer_input = np.append(np.ones((x.shape[0], 1), dtype=int), x, axis=1)
-        for layer in self.layers:
+        for layer in self.layers[:-1]:
             activations = layer.process_input(next_layer_input)
             next_layer_input = np.append(np.ones((len(activations), 1), dtype=int), activations, axis=1)
-        return next_layer_input[:, 1:]
+        self.layers[-1].process_input(next_layer_input)
+        sums = self.layers[-1].intermediate_sums
+        res = []
+        for vect in sums:
+            res.append(softmax(vect))
+        return np.array(res)
 
     def sgd(self, x, y, batch_size, learning_rate, step_limit, eps=1e-6, visualize=False):
         """
@@ -82,7 +88,10 @@ class Network:
         """
         result_matrix = self.get_result_matrix(x)
         last_layer = self.layers[-1]
-        da_dz = last_layer.get_acts_by_sums_derivative()
+        da_dz = []
+        for vect in last_layer.intermediate_sums:
+            da_dz.append(softmax_prime(vect))
+        da_dz = np.array(da_dz)
 
         layer_error = self.target_function_derivative(result_matrix, y) * da_dz
         layer_weights = last_layer.get_weights()
