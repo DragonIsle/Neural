@@ -7,13 +7,18 @@ class ConvolutionNetwork:
         self.layers = layers
         self.fully_connected_net = fully_connected_net
 
+    def get_result_matrix(self, input_data):
+        next_layer_input = input_data
+        for layer in self.layers:
+            next_layer_input = layer.process_sign_maps(next_layer_input)
+
+        return self.fully_connected_net.get_result_matrix(self.transform_maps(next_layer_input))
+
     def process_input(self, input_data, y):
         next_layer_input = input_data
         for layer in self.layers:
             next_layer_input = layer.process_sign_maps(next_layer_input)
 
-        # next_layer_input = np.maximum(next_layer_input, 0)
-        # next_layer_input = next_layer_input / np.max(next_layer_input)
         return self.fully_connected_net.process_input(self.transform_maps(next_layer_input), y)
 
     def sgd(self, x, y, batch_size, learning_rate, learning_rate_conn, step_limit, eps=1e-6, visualize=False):

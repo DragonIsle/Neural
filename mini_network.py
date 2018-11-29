@@ -1,5 +1,7 @@
 import sys
+
 from mnist import MNIST
+
 from classes.convolution.convolution_layer import ConvolutionLayer
 from classes.convolution.convolutional_network import ConvolutionNetwork
 from classes.layer import Layer
@@ -51,8 +53,8 @@ def run_conv_net():
 
     network = ConvolutionNetwork([conv_layer1, conv_layer2], network_conv)
 
-    images, answers = get_example_batch(1000)
-    network.sgd(images, answers, 100, 1, 1, 100, 1e-9, visualize=True)
+    images, answers = get_example_batch(2000)
+    network.sgd(images, answers, 200, 2, 2, 1500, 1e-9, visualize=False)
 
     # for i, l in enumerate(network.fully_connected_net.layers):
     #     save_matrix_to_file('resources/weights_conv' + str(i), l.get_weights())
@@ -82,7 +84,10 @@ def run_on_test_data():
     images, labels = mndata.load_testing()
     images = np.array(images).reshape(len(images), 1, 28, 28) / 255
     answers = transform_labels_to_vectors(labels)
-    print("\nQuality is {:.2f}%\n".format(network.process_input(images[:100], answers[:100]) * 100 / 100))
+    print("\nQuality is {:.2f}%\n".format(network.process_input(images[:1000], answers[:1000]) * 100 / 1000))
+
+    test_data = cv2.imread("/home/saul/Documents/2.png", cv2.IMREAD_GRAYSCALE) / 255
+    network.process_input(np.array([[abs(1 - test_data)]]), np.array([[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]))
 
 
 def run_simple_net():
@@ -104,6 +109,19 @@ def run_simple_net():
     print(network.get_result_matrix(data))
 
     print(network.process_input(data, answers))
+
+
+def check_image(letter):
+    letter = np.asarray(letter.convert('LA'))[:, :, -1] / 255
+    conv_layer1 = ConvolutionLayer.init_with_weights_from_file('../resources/weights_kernels_t0', 5, 2)
+    conv_layer2 = ConvolutionLayer.init_with_weights_from_file('../resources/weights_kernels_t1', 5, 2)
+    network_conv = Network(
+        [Layer.init_with_weights(read_matrix_from_file('../resources/weights_conv_t' + str(i)), sigmoid, sigmoid_prime)
+         for i in range(2)], target_func_for_tests, j_cross_entropy_derivative)
+    network = ConvolutionNetwork([conv_layer1, conv_layer2], network_conv)
+
+    res_matrix = network.get_result_matrix(np.array([[letter]]))
+    return np.argmax(res_matrix.flatten())
 
 
 if __name__ == '__main__':
