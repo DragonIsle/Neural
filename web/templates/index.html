@@ -13,25 +13,16 @@
 </head>
 <body ng-controller="HomeController" onload="init()">
 <div class="row text-center">
-    <!--<h1 class="col-md-6 col-md-offset-3">I can guess your letter, just print it in this area!</h1>-->
-    <h1 class="col-md-6 col-md-offset-3">BUKVI</h1>
+    <h1 class="col-md-6 col-md-offset-3">CIFRI</h1>
 </div>
 <div class="row text-center">
     <canvas id="can" width="240" height="240"></canvas>
 </div>
 <div class="row text-center" id="bts">
-    <button class="btn-danger" onclick="erase()" ng-hide="isSend">Clear</button>
-    <button class="btn-success" ng-click="sendPicture()" ng-hide="isSend">Check</button>
-    <div ng-show="isSend">
-        <!--<h1>I think it's letter '{{letter}}'</h1>-->
-        <input disabled='true' ng-model="letter">
-        <h3>Is it true?</h3>
-        <div ng-show="!isCorrect">
-            <input ng-model="letter">
-            <button class="btn-success" ng-click="sendLetter()">Send</button>
-        </div>
-        <button class="btn-danger" ng-click="wrongLetter()">NO</button>
-        <button class="btn-success" ng-click="correctLetter()">Yes</button>
+    <button class="btn-danger" onclick="erase()">Clear</button>
+    <button class="btn-success" ng-click="sendPicture()">Check</button>
+    <div>
+        <input ng-model="letter">
     </div>
 </div>
 </body>

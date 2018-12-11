@@ -1,4 +1,5 @@
 import os
+
 import matplotlib.pyplot as plt
 
 
@@ -19,5 +20,5 @@ def print_graph(x, y):
     plt.plot(x, y)
     plt.ylabel("Целевая функция")
     plt.xlabel("Число шагов алгоритма")
-    plt.ylim(0, 0.03)
+    plt.ylim(0, 0.04)
     plt.show()

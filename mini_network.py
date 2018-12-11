@@ -35,7 +35,7 @@ def get_example_batch(batch_size):
     images, labels = mndata.load_training()
     images = np.array(images).reshape(len(images), 1, 28, 28) / 255
     answers = transform_labels_to_vectors(labels)
-    return images[:batch_size], answers[:batch_size]
+    return images[batch_size * 3:batch_size * 4], answers[batch_size * 3:batch_size * 4]
 
 
 def run_conv_net():
@@ -54,7 +54,7 @@ def run_conv_net():
     network = ConvolutionNetwork([conv_layer1, conv_layer2], network_conv)
 
     images, answers = get_example_batch(2000)
-    network.sgd(images, answers, 200, 2, 2, 1500, 1e-9, visualize=False)
+    network.sgd(images, answers, 200, 1, 1, 200, 1e-9, visualize=False)
 
     # for i, l in enumerate(network.fully_connected_net.layers):
     #     save_matrix_to_file('resources/weights_conv' + str(i), l.get_weights())

@@ -1,11 +1,12 @@
 from __future__ import print_function
+
 import argparse
+
+import cv2
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import cv2
-import numpy as np
 from torchvision import datasets, transforms
 
 
