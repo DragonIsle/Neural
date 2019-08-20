@@ -1,3 +1,8 @@
 .ipynb_checkpoints
 .idea
 venv
+dist
+conv_network.egg-info
+build
+utils
+classes

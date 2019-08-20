@@ -1,0 +1,12 @@
+canvas {
+    border: 10px double red;
+}
+
+.row {
+    margin: 0 0 0 0;
+}
+
+button {
+    width: 100px;
+    height: 40px;
+}
