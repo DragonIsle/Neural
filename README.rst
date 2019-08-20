@@ -11,7 +11,7 @@ Also have small web interface to immediately test network result
 Usage
 ===========
 
-python setup.py install_lib
+pip install .
 
 cd conv-network
 
