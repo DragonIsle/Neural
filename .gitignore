@@ -4,5 +4,5 @@ venv
 dist
 conv_network.egg-info
 build
-utils
-classes
+./utils
+./classes
